@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:cap="urn:oasis:names:tc:emergency:cap:1.1" xmlns:georss="http://www.georss.org/georss">
+  <id>https://www.alberta.ca/data/aea/rss/feed-full.atom</id>
+  <title>Alberta Emergency Alert - Full Atom Feed</title>
+  <updated>2023-03-12T03:04:59-06:00</updated>
+  <author>
+    <name>Alberta Emergency Alert</name>
+    <uri>https//www.alberta.ca/</uri>
+  </author>
+  <link href="https://www.alberta.ca/data/aea/rss/feed-full.atom" rel="self"/>
+  <link href="https//www.alberta.ca/" rel="alternate"/>
+  <generator>AEA AlertFeed</generator>
+</feed>
