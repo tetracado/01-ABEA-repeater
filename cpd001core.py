@@ -28,7 +28,11 @@ def process_webpage(): #returns true if posted or false if not
             scrpath=cpd001sel.savescn(retlink)
             details=cpd001abea.ab_savedetails(retlink)
             imglink=cpd001imgur.postimg(scrpath)
-            rsclink=cpd001imgur.postimg(details['rsclink'])
+            try:
+                rsclink=cpd001imgur.postimg(details['rsclink'])
+            except:
+                print('couldnt find resource to post to imgur, skipping and subbing blank')
+                rsclink=""
             ptweettext=details['alertsumm']
             print('posting tweet: ',ptweettext) #summary
             postid=posttweet(ptweettext+' ' +imglink)[0]['id']
