@@ -4,6 +4,7 @@ hidtet.py
 temp.py
 testpages.txt
 windows chromedriver/
+img/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

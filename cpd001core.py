@@ -7,6 +7,7 @@ import cpd001imgur
 import cpd001abea
 import schedule
 import feedparser
+from atproto import Client, models
 #import os
 
 #There have been so many alerts today that this bot has been rate limited. Please direct all complaints towards Twitter's API limits for free accounts. The bot will resume posting when possible - please follow @AB_EmergAlert and https://alberta.ca/alberta-emergency-alert.aspx for the latest information.
@@ -33,25 +34,43 @@ def process_webpage(): #returns true if posted or false if not
             except:
                 print('couldnt find resource to post to imgur, skipping and subbing blank')
                 rsclink=""
-            ptweettext=details['alertsumm']
-            print('posting tweet: ',ptweettext) #summary
-            postid=posttweet(ptweettext+' ' +imglink)[0]['id']
-            print('posted tweetid= ',postid)
-            #rep00text=details['area']
-            #print('posting:',rep00text)
-            #rep00id=postreply(rep00text,postid)[0]['id']
-            rep00text=details['description'] + " " + rsclink
-            print('posting:',rep00text)
-            rep00id=postreply(rep00text,postid)[0]['id']
-            rep01text=details['instructions']
-            print('posting:', rep01text)
-            rep01id=postreply(rep01text,rep00id)[0]['id']
-            rep02text=details['link']
-            print('posting:', rep02text)
-            postreply(rep02text, rep01id)
-            totaltweets=totaltweets+4
-            print('total tweets is',totaltweets)
-            print('successfully posted thread, returning to listen cycle')
+            #twitter posting here
+            try:
+                ptweettext=details['alertsumm']
+                print('posting tweet: ',ptweettext) #summary
+                postid=posttweet(ptweettext+' ' +imglink)[0]['id']
+                print('posted tweetid= ',postid)
+                #rep00text=details['area']
+                #print('posting:',rep00text)
+                #rep00id=postreply(rep00text,postid)[0]['id']
+                rep00text=details['description'] + " " + rsclink
+                print('posting:',rep00text)
+                rep00id=postreply(rep00text,postid)[0]['id']
+                rep01text=details['instructions']
+                print('posting:', rep01text)
+                rep01id=postreply(rep01text,rep00id)[0]['id']
+                rep02text=details['link']
+                print('posting:', rep02text)
+                postreply(rep02text, rep01id)
+                totaltweets=totaltweets+4
+                print('total tweets is',totaltweets)
+                print('successfully posted twitter thread, returning to listen cycle')
+            except:
+                print('failed to post twitter thread')  
+            #bskypostinghere     
+            try:
+                #bskyclient._refresh_and_set_session()
+                root_post_ref=models.create_strong_ref(bskyclient.send_image(text=details['alertsumm'],image=open(scrpath,'rb'),image_alt='Screenshot of alert'))
+                reply_to_ref0=models.create_strong_ref(bskyclient.send_post(text=details['description'] + " " + rsclink,reply_to=models.AppBskyFeedPost.ReplyRef(parent=root_post_ref,root=root_post_ref)))
+                reply_to_ref1=models.create_strong_ref(bskyclient.send_post(text=details['instructions'],reply_to=models.AppBskyFeedPost.ReplyRef(parent=reply_to_ref0,root=root_post_ref)))
+                reply_to_ref2=models.create_strong_ref(bskyclient.send_post(text=details['link'],reply_to=models.AppBskyFeedPost.ReplyRef(parent=reply_to_ref1,root=root_post_ref)))
+                print('successfully posted bsky thread, returning to listen cycle')
+                #myimage=open('unknow1n.png','rb')
+                #print('loaded image')
+                #print(bskyclient.send_image(text='textimage',image=myimage,image_alt='myimagealt'))
+            except:
+                print('failed to post bsky thread')
+           
     except Exception as errortext:
         print('failed to process webpage!! with error',errortext)
 
@@ -129,6 +148,10 @@ def tweetlimitchecker(tweetcount):
         postreply(rep01text,postid)
 
 #process_webpage()
+
+bskyclient=Client()
+bskyclient.login('abalertrepeater.bsky.social',hidcpd001.bskykey)
+print('logged in to bsky')
 
 schedule.every(2).minutes.do(rsschecker, url="https://www.alberta.ca/data/aea/rss/feed-full.atom")
 schedule.every(15).minutes.do(process_webpage) 

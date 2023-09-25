@@ -144,3 +144,4 @@ https://www.alberta.ca/aea/cap/2023/05/07/2023-05-07T21_29_20-06_00=emalay@Alber
 https://www.alberta.ca/aea/cap/2023/05/08/2023-05-08T08_16_53-06_00=YellowheadCounty=290ED61A-EE0F-49E8-B3E4-328FF9D685BE.htm
 https://www.alberta.ca/aea/cap/2023/05/08/2023-05-08T13_17_42-06_00=RCMP=D4DC82F8-C14D-4460-95AE-FE3A52C3EB92.htm
 https://www.alberta.ca/aea/cap/2023/05/08/2023-05-08T18_39_41-06_00=AlbertaRCMP=9C5E375D-B169-44E4-94C8-7E144BCABD7E.htm
+https://www.alberta.ca/aea/cap/2023/09/23/2023-09-23T18_27_55-06_00=DeneThaFirstNation=C9435C01-DD4D-4B52-8A03-955EAD039622.htm
