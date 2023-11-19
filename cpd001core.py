@@ -154,7 +154,7 @@ bskyclient=Client()
 bskyclient.login('abalertrepeater.bsky.social',hidcpd001.bskykey)
 print('logged in to bsky')
 
-rsschecker("https://www.alberta.ca/data/aea/rss/feed-full.atom")
+#rsschecker("https://www.alberta.ca/data/aea/rss/feed-full.atom")
 
 schedule.every(2).minutes.do(rsschecker, url="https://www.alberta.ca/data/aea/rss/feed-full.atom")
 schedule.every(15).minutes.do(process_webpage) 
