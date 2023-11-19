@@ -36,6 +36,7 @@ def process_webpage(): #returns true if posted or false if not
                 rsclink=""
             #twitter posting here
             try:
+                #raise Exception("forced error to skip tweetposting")
                 ptweettext=details['alertsumm']
                 print('posting tweet: ',ptweettext) #summary
                 postid=posttweet(ptweettext+' ' +imglink)[0]['id']
@@ -55,11 +56,11 @@ def process_webpage(): #returns true if posted or false if not
                 totaltweets=totaltweets+4
                 print('total tweets is',totaltweets)
                 print('successfully posted twitter thread, returning to listen cycle')
-            except:
-                print('failed to post twitter thread')  
+            except Exception as errortext:
+                print('failed to post twitter thread with error',errortext) 
             #bskypostinghere     
             try:
-                #bskyclient._refresh_and_set_session()
+               # raise Exception("forced error to skip bskyposting")
                 root_post_ref=models.create_strong_ref(bskyclient.send_image(text=details['alertsumm'],image=open(scrpath,'rb'),image_alt='Screenshot of alert'))
                 reply_to_ref0=models.create_strong_ref(bskyclient.send_post(text=details['description'] + " " + rsclink,reply_to=models.AppBskyFeedPost.ReplyRef(parent=root_post_ref,root=root_post_ref)))
                 reply_to_ref1=models.create_strong_ref(bskyclient.send_post(text=details['instructions'],reply_to=models.AppBskyFeedPost.ReplyRef(parent=reply_to_ref0,root=root_post_ref)))
@@ -68,8 +69,8 @@ def process_webpage(): #returns true if posted or false if not
                 #myimage=open('unknow1n.png','rb')
                 #print('loaded image')
                 #print(bskyclient.send_image(text='textimage',image=myimage,image_alt='myimagealt'))
-            except:
-                print('failed to post bsky thread')
+            except Exception as errortext:
+                print('failed to post twitter thread with error',errortext) 
            
     except Exception as errortext:
         print('failed to process webpage!! with error',errortext)
@@ -152,6 +153,8 @@ def tweetlimitchecker(tweetcount):
 bskyclient=Client()
 bskyclient.login('abalertrepeater.bsky.social',hidcpd001.bskykey)
 print('logged in to bsky')
+
+rsschecker("https://www.alberta.ca/data/aea/rss/feed-full.atom")
 
 schedule.every(2).minutes.do(rsschecker, url="https://www.alberta.ca/data/aea/rss/feed-full.atom")
 schedule.every(15).minutes.do(process_webpage) 

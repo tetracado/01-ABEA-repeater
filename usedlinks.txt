@@ -145,3 +145,4 @@ https://www.alberta.ca/aea/cap/2023/05/08/2023-05-08T08_16_53-06_00=YellowheadCo
 https://www.alberta.ca/aea/cap/2023/05/08/2023-05-08T13_17_42-06_00=RCMP=D4DC82F8-C14D-4460-95AE-FE3A52C3EB92.htm
 https://www.alberta.ca/aea/cap/2023/05/08/2023-05-08T18_39_41-06_00=AlbertaRCMP=9C5E375D-B169-44E4-94C8-7E144BCABD7E.htm
 https://www.alberta.ca/aea/cap/2023/09/23/2023-09-23T18_27_55-06_00=DeneThaFirstNation=C9435C01-DD4D-4B52-8A03-955EAD039622.htm
+https://www.alberta.ca/aea/cap/2023/11/19/2023-11-19T11_50_46-07_00=AlbertaRCMP=B2544331-A8F2-4E0F-8998-2D2C2BA5123E.htm
