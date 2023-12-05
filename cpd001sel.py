@@ -19,7 +19,7 @@ options.add_argument('--disable-gpu')
 options.add_argument('--window-size=1024,1068')
 
 scroptions=webdriver.ChromeOptions()
-scroptions.headless = True
+scroptions.add_argument("--headless")
 if platform.system() == "Linux":
      #if raspi
     service = webdriver.ChromeService(executable_path="/usr/bin/chromedriver")
