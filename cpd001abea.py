@@ -10,6 +10,7 @@ from selenium.common.exceptions import NoSuchElementException
 import time
 import re
 import albertamunis
+import os
 
 def ab_getalertlink(link):
     cpd001sel.openlink(link)
@@ -48,7 +49,7 @@ def ab_getalertlink(link):
                                 return linkornone
                  except NoSuchElementException:
                       try: #cancelled alert
-                            if (alert.find_element(By.CLASS_NAME, "goa-alert--top-grey")):
+                            if (alert.find_element(By.CLASS_NAME, "goa-alert--top-dark-grey")):
                                 print('found cancel alert')
                                 linkornone=processalert(alert)
                                 if linkornone!=None:
@@ -233,12 +234,15 @@ def ab_savedetails(link):
     print(details)
     return(details)
 
+mydir=os.path.dirname(__file__)
+usedlinkspath=os.path.join(mydir,'usedlinks.txt')
+
 def ab_checkfordupes(link):
     #testlink=str(ab_getalertlink(link))
     #testlink='https://stackoverflow.com/questions/5226893/understanding-a-chain-of-imports-in-python'
     #abealink='http://www.emergencyalert.alberta.ca/alerts/2022/06/10027.html'
     try:
-        fhand=open('usedlinks.txt','r+')
+        fhand=open(usedlinkspath,'r+')
         print('opened usedlinks.txt')
         found=False
         for line in fhand:
