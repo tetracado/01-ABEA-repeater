@@ -7,12 +7,47 @@ import cpd001imgur
 import cpd001abea
 import schedule
 import feedparser
+import typing as t
 from atproto import Client, models
 #import os
 
 #There have been so many alerts today that this bot has been rate limited. Please direct all complaints towards Twitter's API limits for free accounts. The bot will resume posting when possible - please follow @AB_EmergAlert and https://alberta.ca/alberta-emergency-alert.aspx for the latest information.
 
 totaltweets=0 #as of september 1, grand total 1650
+
+def extract_url_byte_positions(text: str, *, encoding: str = 'UTF-8') -> t.List[t.Tuple[str, int, int]]:
+    """This function will detect any links beginning with http or https."""
+    #https://github.com/MarshalX/atproto/blob/main/examples/advanced_usage/auto_hyperlinks.py
+    encoded_text = text.encode(encoding)
+
+    # Adjusted URL matching pattern
+    pattern = rb'https?://[^ \n\r\t]*'
+
+    matches = re.finditer(pattern, encoded_text)
+    url_byte_positions = []
+
+    for match in matches:
+        url_bytes = match.group(0)
+        url = url_bytes.decode(encoding)
+        url_byte_positions.append((url, match.start(), match.end()))
+
+    return url_byte_positions
+
+def injecturls(text: str):
+
+    url_positions = extract_url_byte_positions(text)
+    facets = []
+
+    for link_data in url_positions:
+        uri, byte_start, byte_end = link_data
+        facets.append(
+            models.AppBskyRichtextFacet.Main(
+                features=[models.AppBskyRichtextFacet.Link(uri=uri)],
+                index=models.AppBskyRichtextFacet.ByteSlice(byte_start=byte_start, byte_end=byte_end),
+            )
+        )
+    return facets
+
 
 def process_webpage(): #returns true if posted or false if not
     global totaltweets
@@ -61,16 +96,20 @@ def process_webpage(): #returns true if posted or false if not
             #bskypostinghere     
             try:
                # raise Exception("forced error to skip bskyposting")
-                root_post_ref=models.create_strong_ref(bskyclient.send_image(text=details['alertsumm'],image=open(scrpath,'rb'),image_alt='Screenshot of alert'))
-                reply_to_ref0=models.create_strong_ref(bskyclient.send_post(text=details['description'] + " " + rsclink,reply_to=models.AppBskyFeedPost.ReplyRef(parent=root_post_ref,root=root_post_ref)))
-                reply_to_ref1=models.create_strong_ref(bskyclient.send_post(text=details['instructions'],reply_to=models.AppBskyFeedPost.ReplyRef(parent=reply_to_ref0,root=root_post_ref)))
-                reply_to_ref2=models.create_strong_ref(bskyclient.send_post(text=details['link'],reply_to=models.AppBskyFeedPost.ReplyRef(parent=reply_to_ref1,root=root_post_ref)))
+                alertsumm=details['alertsumm']
+                description=details['description']+" "+ rsclink
+                instructions=details['instructions']
+                linkstr=details['link']
+                root_post_ref=models.create_strong_ref(bskyclient.send_image(text=alertsumm,facets=injecturls(alertsumm),image=open(scrpath,'rb'),image_alt='Screenshot of alert'))
+                reply_to_ref0=models.create_strong_ref(bskyclient.send_post(text=description,facets=injecturls(description),reply_to=models.AppBskyFeedPost.ReplyRef(parent=root_post_ref,root=root_post_ref)))
+                reply_to_ref1=models.create_strong_ref(bskyclient.send_post(text=instructions,facets=injecturls(instructions),reply_to=models.AppBskyFeedPost.ReplyRef(parent=reply_to_ref0,root=root_post_ref)))
+                reply_to_ref2=models.create_strong_ref(bskyclient.send_post(text=linkstr,facets=injecturls(linkstr),reply_to=models.AppBskyFeedPost.ReplyRef(parent=reply_to_ref1,root=root_post_ref)))
                 print('successfully posted bsky thread, returning to listen cycle')
                 #myimage=open('unknow1n.png','rb')
                 #print('loaded image')
                 #print(bskyclient.send_image(text='textimage',image=myimage,image_alt='myimagealt'))
             except Exception as errortext:
-                print('failed to post twitter thread with error',errortext) 
+                print('failed to post bskythread thread with error',errortext) 
            
     except Exception as errortext:
         print('failed to process webpage!! with error',errortext)

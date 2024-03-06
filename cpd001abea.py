@@ -49,7 +49,7 @@ def ab_getalertlink(link):
                                 return linkornone
                  except NoSuchElementException:
                       try: #cancelled alert
-                            if (alert.find_element(By.CLASS_NAME, "goa-alert--top-dark-grey")):
+                            if (alert.find_element(By.CLASS_NAME, "goa-alert--top-dark-grey") or alert.find_element(By.CLASS_NAME, "goa-alert--top-grey")): #fucking ui a/b testing
                                 print('found cancel alert')
                                 linkornone=processalert(alert)
                                 if linkornone!=None:
