@@ -8,7 +8,7 @@ import cpd001abea
 import schedule
 import feedparser
 import typing as t
-from atproto import Client, models
+from atproto import Client, models,client_utils
 #import os
 
 #There have been so many alerts today that this bot has been rate limited. Please direct all complaints towards Twitter's API limits for free accounts. The bot will resume posting when possible - please follow @AB_EmergAlert and https://alberta.ca/alberta-emergency-alert.aspx for the latest information.
@@ -96,11 +96,11 @@ def process_webpage(): #returns true if posted or false if not
             #bskypostinghere     
             try:
                # raise Exception("forced error to skip bskyposting")
-                alertsumm=details['alertsumm']
+                alertsumm=details['alertsumm'][8:]   #removing    {#ABemerg}
                 description=details['description']+" "+ rsclink
                 instructions=details['instructions']
                 linkstr=details['link']
-                root_post_ref=models.create_strong_ref(bskyclient.send_image(text=alertsumm,facets=injecturls(alertsumm),image=open(scrpath,'rb'),image_alt='Screenshot of alert'))
+                root_post_ref=models.create_strong_ref(bskyclient.send_image(text=client_utils.TextBuilder().tag('#ABemerg','ABemerg').text(alertsumm),facets=injecturls(alertsumm),image=open(scrpath,'rb'),image_alt='Screenshot of alert'))
                 reply_to_ref0=models.create_strong_ref(bskyclient.send_post(text=description,facets=injecturls(description),reply_to=models.AppBskyFeedPost.ReplyRef(parent=root_post_ref,root=root_post_ref)))
                 reply_to_ref1=models.create_strong_ref(bskyclient.send_post(text=instructions,facets=injecturls(instructions),reply_to=models.AppBskyFeedPost.ReplyRef(parent=reply_to_ref0,root=root_post_ref)))
                 reply_to_ref2=models.create_strong_ref(bskyclient.send_post(text=linkstr,facets=injecturls(linkstr),reply_to=models.AppBskyFeedPost.ReplyRef(parent=reply_to_ref1,root=root_post_ref)))
