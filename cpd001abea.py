@@ -35,29 +35,37 @@ def ab_getalertlink(link):
         for alert in allalerts:
             #print ('finding alerts')
             try: #crit alert
-                 if (alert.find_element(By.CLASS_NAME, "goa-alert--top-red")):
-                        print('found crit alert')
+                if (alert.find_element(By.CLASS_NAME, "goa-alert--top-red")):
+                    print('found crit alert')
+                    linkornone=processalert(alert)
+                    if linkornone!=None:
+                        return linkornone
+            except NoSuchElementException:
+                try: #info alert 
+                    if (alert.find_element(By.CLASS_NAME, "goa-alert--top-yellow")):
+                        print('found info alert')
                         linkornone=processalert(alert)
                         if linkornone!=None:
-                             return linkornone
-            except NoSuchElementException:
-                 try: #info alert 
-                     if (alert.find_element(By.CLASS_NAME, "goa-alert--top-yellow")):
-                            print('found info alert')
+                            return linkornone
+                except NoSuchElementException:
+                    try: #cancelled dark grey alert
+                        if (alert.find_element(By.CLASS_NAME, "goa-alert--top-dark-grey")):
+                            print('found dark grey cancel alert')
                             linkornone=processalert(alert)
                             if linkornone!=None:
                                 return linkornone
-                 except NoSuchElementException:
-                      try: #cancelled alert
-                            if (alert.find_element(By.CLASS_NAME, "goa-alert--top-dark-grey") or alert.find_element(By.CLASS_NAME, "goa-alert--top-grey")): #fucking ui a/b testing
-                                print('found cancel alert')
+                    except NoSuchElementException:
+                        try: #cancelled light/normal grey alert
+                            if (alert.find_element(By.CLASS_NAME, "goa-alert--top-grey")): 
+                                print('found dark grey cancel alert')
                                 linkornone=processalert(alert)
                                 if linkornone!=None:
-                                    return linkornone
-                      except NoSuchElementException:
-                        print('couldnt find link')
-                        continue
-                 
+                                    return linkornone                
+
+                        except NoSuchElementException:
+                            print('couldnt find link')
+                            continue
+                    
             # OLD VERSION:
             # print ('finding info alert')
             # try:
