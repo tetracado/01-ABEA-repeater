@@ -147,3 +147,6 @@ https://www.alberta.ca/aea/cap/2023/05/08/2023-05-08T18_39_41-06_00=AlbertaRCMP=
 https://www.alberta.ca/aea/cap/2023/09/23/2023-09-23T18_27_55-06_00=DeneThaFirstNation=C9435C01-DD4D-4B52-8A03-955EAD039622.htm
 https://www.alberta.ca/aea/cap/2023/11/19/2023-11-19T11_50_46-07_00=AlbertaRCMP=B2544331-A8F2-4E0F-8998-2D2C2BA5123E.htm
 https://www.alberta.ca/aea/cap/2024/01/13/2024-01-13T18_44_42-07_00=AlbertaEmergencyManagementAgency=1489313F-98D9-4737-8FA1-E84EB73520EC.htm
+https://www.alberta.ca/aea/cap/2024/04/22/2024-04-22T16_49_15-06_00=AlbertaEmergencyManagementAgency=2BF01BCD-B595-4475-9BB4-9DC0F2753C46.htm
+https://www.alberta.ca/aea/cap/2024/04/21/2024-04-21T15_50_44-06_00=RegionalMunicipalityofWoodBuffalo=3DE0EB96-D597-4849-B5D6-2374A599F63C.htm
+https://www.alberta.ca/aea/cap/2024/04/22/2024-04-22T20_27_32-06_00=RegionalMunicipalityofWoodBuffalo=02EAFC2C-9AB3-4CE1-A11B-4AC35B8BC9F8.htm
